@@ -1,0 +1,19 @@
+{
+    "description" : "The CodeIgniter framework",
+    "name" : "codeigniter/framework",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.2.4",
+        "illuminate/container": "^5.1",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "mikey179/vfsStream": "1.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "application"
+        }
+    }
+
+}
