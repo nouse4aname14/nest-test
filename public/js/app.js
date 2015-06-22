@@ -6,12 +6,18 @@ $(document).ready(function() {
             this.target_temperature = settings.target_temperature;
             this.ambient_temperature = settings.ambient_temperature;
             this.hvac_state = settings.hvac_state;
+            this.device_id = settings.device_id;
 
             this.checkHvacState();
             this.setAmbientTemperature();
         },
         setAmbientTemperature : function() {
             $('#current-temp').html('Current Temp ' + this.ambient_temperature);
+        },
+        getTemperatureHistory : function() {
+            $.get("http://192.168.10.10/thermostat/temperaturehistory", function(data) {
+                console.log(data);
+            });
         },
         increaseTargetTemperature : function() {
             if (this.target_temperature <= 89) {
@@ -22,6 +28,8 @@ $(document).ready(function() {
                 this.hvac_state = 'off';
                 this.checkHvacState();
             }
+
+            this.updateTargetTemperature(this.target_temperature);
 
             return this.target_temperature;
         },
@@ -35,7 +43,14 @@ $(document).ready(function() {
                 this.checkHvacState();
             }
 
+            this.updateTargetTemperature(this.target_temperature);
+
             return this.target_temperature;
+        },
+        updateTargetTemperature : function(temp) {
+            $.get("http://192.168.10.10/thermostat/changeTemperature/" + this.device_id + "/" + temp, function(data) {
+                console.log(data);
+            });
         },
         getTargetTemperature : function() {
           return this.target_temperature;
@@ -64,4 +79,5 @@ $(document).ready(function() {
     $('.temperature-display .up-control').on('click', function() {
         $('.temperature-container span:first').html(Thermostat.increaseTargetTemperature());
     });
+
 });

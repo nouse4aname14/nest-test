@@ -1,17 +1,30 @@
 <?php
 namespace App\Domain\Devices\Thermostats;
 
-class Thermostat extends \CI_Model
+use MongoClient;
+
+/**
+ * Class Thermostat
+ * @package App\Domain\Devices\Thermostats
+ */
+class Thermostat
 {
-    public $temperature;
-
-    public function __construct()
+    /**
+     * Log thermostats temperatures.
+     *
+     * @param $data
+     */
+    public function logTemperatures($data)
     {
-        parent::__construct();
-    }
-
-    public function save()
-    {
-        $this->db->insert('thermo_temp', $this);
+        $db = new MongoClient();
+        $temperatures = $db->selectCollection('testproj', 'temerature_history');
+        $temperatures->insert([
+            'device_id' => $data['device_id'],
+            'name' => $data['name'],
+            'temperature_scale' => $data['temperature_scale'],
+            'target_temperature_f' => $data['target_temperature_f'],
+            'ambient_temperature_f' => $data['ambient_temperature_f'],
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
     }
 }

@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <title>Dashboard</title>
-        <link rel="stylesheet" type="text/css" href="../../public/css/app.css" />
+        <link rel="stylesheet" type="text/css" href="../../public/css/simulatorApp.css" />
     </head>
     <body>
         <div class="cards">
@@ -152,46 +152,20 @@
                 </div>
             </div>
         </div>
-        <div style="background: #fff;"><canvas id="myChart" width="400" height="400" style="position: absolute;"></canvas></div>
-
-        <div id="barchart_material" style="width: 900px; height: 1000px; display: none;"></div>
         <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script>
-            var currentThermostatSettings = {
-                target_temperature : <?php echo $target_temperature_f; ?>,
-                ambient_temperature : <?php echo $ambient_temperature_f; ?>,
-                hvac_state : "<?php echo $hvac_state; ?>",
-                name : "<?php echo $name_long; ?>",
-                history : <?php echo $history; ?>,
-                device_id : "<?php echo $device_id; ?>"
+            var simulatorThermostatSettings = {
+                <?php foreach ($thermostats as $data): ?>
+                <?php echo $data['device_id']; ?> : {
+                    target_temperature : <?php echo $data['target_temperature_f']; ?>,
+                    ambient_temperature : <?php echo $data['ambient_temperature_f']; ?>,
+                    hvac_state : "<?php echo $data['hvac_state']; ?>",
+                    name : "<?php echo $data['name_long']; ?>",
+                    device_id : "<?php echo $data['device_id']; ?>"
+                },
+                <?php endforeach; ?>
             };
         </script>
-        <script src="../../public/js/app.js"></script>
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-        <script type="text/javascript">
-
-            currentThermostatSettings.history.unshift(['Date', 'Ambient Temp']);
-
-            for (var i in currentThermostatSettings.history) {
-                console.log(currentThermostatSettings.history[i]);
-            }
-
-            google.load("visualization", "1.1", {packages:["bar"]});
-            google.setOnLoadCallback(drawChart);
-            function drawChart() {
-                var data = google.visualization.arrayToDataTable(currentThermostatSettings.history);
-
-                var options = {
-                    chart: {
-                        title: 'Temperature History',
-                    },
-                    bars: 'horizontal'
-                };
-
-                var chart = new google.charts.Bar(document.getElementById('barchart_material'));
-
-                chart.draw(data, options);
-            }
-        </script>
+        <script src="../../public/js/simulatorApp.js"></script>
     </body>
 </html>
