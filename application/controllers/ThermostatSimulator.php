@@ -15,6 +15,9 @@ class ThermostatSimulator extends CI_Controller
 
     use HttpResponseTrait;
 
+    /**
+     *
+     */
     public function __construct()
     {
         parent::__construct();
@@ -49,5 +52,21 @@ class ThermostatSimulator extends CI_Controller
         } catch(InvalidArgumentException $e) {
             echo $this->respondWithError($e->getMessage(), 400);
         }
+    }
+
+    /**
+     * Get temperature reporting information.
+     */
+    public function getAllReportingInformation()
+    {
+        echo $this->toJson($this->thermostatRepo->getReportingInformation());
+    }
+
+    /**
+     * Get current thermometer reading.
+     */
+    public function getCurrentReading()
+    {
+        echo $this->toJson($this->thermostatRepo->getAll());
     }
 }

@@ -20,4 +20,9 @@ interface ThermostatRepositoryInterface extends RepositoryInterface
      * @return mixed
      */
     public function changeTemperature($temperature, $thermostatId);
+
+    /**
+     * @return mixed
+     */
+    public function getReportingInformation();
 }

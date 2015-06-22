@@ -5,8 +5,11 @@
         <meta charset="utf-8">
         <title>Dashboard</title>
         <link rel="stylesheet" type="text/css" href="../../public/css/app.css" />
+        <!-- Add fancyBox -->
+        <link rel="stylesheet" href="../../public/js/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
     </head>
     <body>
+    <div id="<?php echo $device_id; ?>" class='top-card-container'>
         <div class="cards">
             <div class="card-container">
                 <div class="card type-thermostat">
@@ -148,50 +151,66 @@
                             </div>
 
                         </div>
+                        <div class="toolbar-container">
+                            <div class="toolbar">
+                                <a class="fancy" href="#popup-content">
+                                    <div class="toolbar-button history" data-class-disabled="view:isEnergyViewDisabled">
+                                        <div class="icon"></div>
+                                        <div class="label">HISTORY</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
         <div style="background: #fff;"><canvas id="myChart" width="400" height="400" style="position: absolute;"></canvas></div>
-
+        <div id="popup-content" style="display: none; width:400px">
         <div id="barchart_material" style="width: 900px; height: 1000px; display: none;"></div>
         <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-        <script>
+            <script type="text/javascript" src="../../public/js/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+            <script>
             var currentThermostatSettings = {
                 target_temperature : <?php echo $target_temperature_f; ?>,
                 ambient_temperature : <?php echo $ambient_temperature_f; ?>,
                 hvac_state : "<?php echo $hvac_state; ?>",
                 name : "<?php echo $name_long; ?>",
-                history : <?php echo $history; ?>,
                 device_id : "<?php echo $device_id; ?>"
             };
+            $(document).ready(function() {
+                $(".fancy").fancybox();
+            });
         </script>
         <script src="../../public/js/app.js"></script>
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
         <script type="text/javascript">
 
-            currentThermostatSettings.history.unshift(['Date', 'Ambient Temp']);
-
-            for (var i in currentThermostatSettings.history) {
-                console.log(currentThermostatSettings.history[i]);
-            }
-
-            google.load("visualization", "1.1", {packages:["bar"]});
-            google.setOnLoadCallback(drawChart);
-            function drawChart() {
-                var data = google.visualization.arrayToDataTable(currentThermostatSettings.history);
-
-                var options = {
-                    chart: {
-                        title: 'Temperature History',
-                    },
-                    bars: 'horizontal'
-                };
-
-                var chart = new google.charts.Bar(document.getElementById('barchart_material'));
-
-                chart.draw(data, options);
-            }
+//            currentThermostatSettings.history.unshift(['Date', 'Ambient Temp']);
+//
+//            for (var i in currentThermostatSettings.history) {
+//                console.log(currentThermostatSettings.history[i]);
+//            }
+//
+//            google.load("visualization", "1.1", {packages:["bar"]});
+//            google.setOnLoadCallback(drawChart);
+//            function drawChart() {
+//                var data = google.visualization.arrayToDataTable(currentThermostatSettings.history);
+//
+//                var options = {
+//                    chart: {
+//                        title: 'Temperature History',
+//                    },
+//                    bars: 'horizontal'
+//                };
+//
+//                var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+//
+//                chart.draw(data, options);
+//            }
         </script>
     </body>
 </html>

@@ -20,6 +20,8 @@ $(document).ready(function() {
 
             if (length > 0) {
                 $('body').fadeIn('slow');
+            } else {
+                alert('Need to add a remote device');
             }
 
             $('.cards .temperature-display .down-control').on('click', function() {
@@ -31,13 +33,31 @@ $(document).ready(function() {
                 var id = $(this).parents('.top-card-container').attr('id');
                 $('#' + id + ' .temperature-container span:first').html(Thermostat.increaseTargetTemperature(simulatorThermostatSettings[id]));
             });
+
+            $('.toolbar-button.history').on('click', function() {
+                var id = $(this).parents('.top-card-container').attr('id');
+                Thermostat.getTemperatureHistory(id);
+            });
         },
         setAmbientTemperature : function() {
             $('#current-temp').html('Current Temp ' + this.ambient_temperature);
         },
-        getTemperatureHistory : function() {
-            $.get("http://192.168.10.10/thermostat/temperaturehistory", function(data) {
-                console.log(data);
+        getTemperatureHistory : function(id) {
+            $.get("http://" + window.location.host + "/ThermostatSimulator/getAllReportingInformation", function(data) {
+                var averageTempReport = data[id].report.averageTempByDay;
+                var row = '<h3 style="text-align: center;">Daily Average Thermostat Temperature</h3>';
+                var monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+
+                for (var temp in averageTempReport) {
+                    var date = new Date((temp.split('-')));
+                    var date = monthNames[date.getMonth()] + " " + date.getDay() + " : ";
+                    row += '<div style="clear: both;"><div style="float:left">' + date + '</div> <div style="float:right">' + averageTempReport[temp] + 'F </div></div>';
+                }
+
+                var chart = "<div>" + row + "</div>"
+                $('#popup-content').html(chart);
             });
         },
         increaseTargetTemperature : function(thermostat) {
@@ -61,7 +81,7 @@ $(document).ready(function() {
             return thermostat.target_temperature;
         },
         updateTargetTemperature : function(thermostat) {
-            $.get("http://192.168.10.10/thermostatSimulator/changeTemperature/" + thermostat.device_id + "/" + thermostat.target_temperature);
+            $.get("http://" + window.location.host + "/thermostatSimulator/changeTemperature/" + thermostat.device_id + "/" + thermostat.target_temperature);
         },
         getTargetTemperature : function() {
           return this.target_temperature;

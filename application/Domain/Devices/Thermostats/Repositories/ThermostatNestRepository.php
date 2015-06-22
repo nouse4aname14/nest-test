@@ -38,6 +38,12 @@ class ThermostatNestRepository implements ThermostatRepositoryInterface
      */
     public function getAll()
     {
+        $thermostats = $this->client->getAllThermostats();
+
+        foreach ($thermostats as $thermostat) {
+            $this->model->logTemperatures($thermostat);
+        }
+
         return $this->client->getAllThermostats();
     }
 
@@ -62,6 +68,18 @@ class ThermostatNestRepository implements ThermostatRepositoryInterface
      */
     public function changeTemperature($temperature, $thermostatId)
     {
-        return $this->client->updateThermostatTemperature($temperature, $thermostatId);
+        $updateThermostatTemperature = $this->client->updateThermostatTemperature($temperature, $thermostatId);
+        $this->model->logUpdatedTemperaturesFromId($temperature, $thermostatId);
+        return $updateThermostatTemperature;
+    }
+
+    /**
+     * Get temperature reporting information.
+     *
+     * @return mixed
+     */
+    public function getReportingInformation()
+    {
+        return $this->model->getReportingInformation();
     }
 }

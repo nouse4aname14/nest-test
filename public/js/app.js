@@ -10,13 +10,32 @@ $(document).ready(function() {
 
             this.checkHvacState();
             this.setAmbientTemperature();
+
+            $('.toolbar-button.history').on('click', function() {
+                var id = $(this).parents('.top-card-container').attr('id');
+                Thermostat.getTemperatureHistory(id);
+            });
+
         },
         setAmbientTemperature : function() {
             $('#current-temp').html('Current Temp ' + this.ambient_temperature);
         },
-        getTemperatureHistory : function() {
-            $.get("http://192.168.10.10/thermostat/temperaturehistory", function(data) {
-                console.log(data);
+        getTemperatureHistory : function(id) {
+            $.get("http://" + window.location.host + "/ThermostatSimulator/getAllReportingInformation", function(data) {
+                var averageTempReport = data[id].report.averageTempByDay;
+                var row = '<h3 style="text-align: center;">Daily Average Thermostat Temperature</h3>';
+                var monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+
+                for (var temp in averageTempReport) {
+                    var date = new Date((temp.split('-')));
+                    var date = monthNames[date.getMonth()] + " " + date.getDay() + " : ";
+                    row += '<div style="clear: both;"><div style="float:left">' + date + '</div> <div style="float:right">' + averageTempReport[temp] + 'F </div></div>';
+                }
+
+                var chart = "<div>" + row + "</div>"
+                $('#popup-content').html(chart);
             });
         },
         increaseTargetTemperature : function() {
@@ -48,7 +67,7 @@ $(document).ready(function() {
             return this.target_temperature;
         },
         updateTargetTemperature : function(temp) {
-            $.get("http://192.168.10.10/thermostat/changeTemperature/" + this.device_id + "/" + temp, function(data) {
+            $.get("http://" + window.location.host + "/thermostat/changeTemperature/" + this.device_id + "/" + temp, function(data) {
                 console.log(data);
             });
         },

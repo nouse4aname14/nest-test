@@ -2,6 +2,7 @@
 namespace App\Domain;
 
 use Illuminate\Container\Container;
+use MongoClient;
 
 /**
  * Class ContainerTrait
@@ -22,6 +23,8 @@ trait ContainerTrait
             'App\Domain\Devices\Thermostats\Interfaces\ThermostatRepositoryInterface',
             'App\Domain\Devices\Thermostats\Repositories\ThermostatNestRepository'
         );
+
+        $container->instance('MongoClient', new MongoClient("mongodb://localhost:27017"));
 
         return $container;
     }
