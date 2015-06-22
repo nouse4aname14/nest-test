@@ -70,7 +70,7 @@ $(document).ready(function() {
             if (thermostat.target_temperature >= thermostat.ambient_temperature && thermostat.hvac_state == 'cooling') {
                 $('#' + thermostat.device_id + ' .cards .card.type-thermostat').removeClass('thermostat-cooling')
             }
-            
+
             if (thermostat.hvac_state == 'cooling') {
                 if (thermostat.target_temperature >= thermostat.ambient_temperature) {
                     $('#' + thermostat.device_id + ' .cards .card.type-thermostat').removeClass('thermostat-cooling');
