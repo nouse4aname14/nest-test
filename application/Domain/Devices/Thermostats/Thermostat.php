@@ -101,8 +101,8 @@ class Thermostat
 
             $dates = [];
 
-            for($i = 0; $i < count($report[$id]); $i++){
-                if (array_key_exists($report[$id][$i]['created_at'], $dates)){
+            for ($i = 0; $i < count($report[$id]); $i++) {
+                if (array_key_exists($report[$id][$i]['created_at'], $dates)) {
                     $dates[$report[$id][$i]['created_at']][] = $report[$id][$i]['target_temperature_f'];
                 } else {
                     $dates[] = $report[$id][$i]['created_at'];

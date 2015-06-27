@@ -84,7 +84,7 @@ class Thermostat extends CI_Controller
     {
         try {
             echo $this->toJson($this->thermostatRepo->changeTemperature((int) $temperature, $thermostatId));
-        } catch(InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             echo $this->respondWithError($e->getMessage(), 400);
         }
     }

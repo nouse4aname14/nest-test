@@ -14,7 +14,7 @@ trait HttpResponseTrait
      * @param $errorCode
      * @return string
      */
-    protected function respondWithError($message,  $errorCode)
+    protected function respondWithError($message, $errorCode)
     {
         header('Content-Type: application/json');
         http_response_code($errorCode);

@@ -56,7 +56,7 @@ class NestClient
     {
         try {
             $response = $this->toObject($this->client->get($this->makeUri('devices'))->getBody());
-        } catch(ClientException $e) {
+        } catch (ClientException $e) {
             $response = $this->respondWithError($e->getMessage(), 404);
         }
 
@@ -72,7 +72,7 @@ class NestClient
     {
         try {
             $response = $this->toArray($this->client->get($this->makeUri('devices/thermostats'))->getBody()->getContents());
-        } catch(ClientException $e) {
+        } catch (ClientException $e) {
             $response = $this->respondWithError($e->getMessage(), 404);
         }
 
@@ -116,7 +116,7 @@ class NestClient
                     ['json' => ['target_temperature_f' => $temperature]]
                 )->getBody()->getContents()
             );
-        } catch(ClientException $e) {
+        } catch (ClientException $e) {
             $response = $this->respondWithError($e->getMessage(), 404);
         }
 
