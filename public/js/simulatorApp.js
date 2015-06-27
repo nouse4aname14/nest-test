@@ -52,7 +52,7 @@ $(document).ready(function() {
 
                 for (var temp in averageTempReport) {
                     var date = new Date((temp.split('-')));
-                    var date = monthNames[date.getMonth()] + " " + date.getDay() + " : ";
+                    var date = monthNames[date.getMonth()] + " " + date.getUTCDate() + " : ";
                     row += '<div style="clear: both;"><div style="float:left">' + date + '</div> <div style="float:right">' + averageTempReport[temp] + 'F </div></div>';
                 }
 
